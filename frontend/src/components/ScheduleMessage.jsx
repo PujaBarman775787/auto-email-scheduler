@@ -23,7 +23,16 @@ export default function ScheduleMessage() {
     try {
       setLoading(true);
 
-      await api.post("/messages", form);
+      // 🔥 FIX: Convert local time → UTC
+      const localTime = new Date(form.sendAt);
+      const utcTime = localTime.toISOString();
+
+      const updatedForm = {
+        ...form,
+        sendAt: utcTime   // ✅ IMPORTANT FIX
+      };
+
+      await api.post("/messages", updatedForm);
 
       alert("Message scheduled successfully.");
 
@@ -36,6 +45,7 @@ export default function ScheduleMessage() {
       });
 
     } catch (error) {
+      console.error(error);
       alert("Error scheduling message.");
     } finally {
       setLoading(false);
@@ -144,7 +154,6 @@ export default function ScheduleMessage() {
     </div>
   );
 }
-
 
 
 

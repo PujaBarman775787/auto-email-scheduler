@@ -58,7 +58,7 @@ export default function ScheduleMessage() {
       <div className="w-full max-w-lg bg-white shadow-md rounded-lg p-6">
 
         <h2 className="text-xl font-bold text-black text-center mb-6">
-          Auto Message Scheduler
+          Auto Email Scheduler
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">

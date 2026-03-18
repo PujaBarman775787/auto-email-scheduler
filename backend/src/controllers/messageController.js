@@ -23,17 +23,32 @@ export const scheduleMessage = async (req, res) => {
       status: "pending"
     });
 
-    // 🔥 SEND EMAIL HERE
-    await sendEmail({
-      senderEmail,
-      to: receiverEmail,
-      subject,
-      text: message
-    });
+    // ⏰ SCHEDULING LOGIC
+    const delay = new Date(sendAt) - new Date();
+
+    console.log("⏰ Delay:", delay);
+
+    if (delay > 0) {
+      setTimeout(async () => {
+        console.log("📨 Sending scheduled email...");
+
+        await sendEmail({
+          senderEmail,
+          to: receiverEmail,
+          subject,
+          text: message
+        });
+
+        console.log("✅ Scheduled email sent");
+
+      }, delay);
+    } else {
+      console.log("⚠️ Time already passed");
+    }
 
     res.status(200).json({
       success: true,
-      message: "Message scheduled & email sent",
+      message: "Message scheduled successfully",
       data: newMessage
     });
 

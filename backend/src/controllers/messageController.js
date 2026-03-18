@@ -1,4 +1,5 @@
 import Message from "../models/Message.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 export const scheduleMessage = async (req, res) => {
   try {
@@ -22,13 +23,22 @@ export const scheduleMessage = async (req, res) => {
       status: "pending"
     });
 
+    // 🔥 SEND EMAIL HERE
+    await sendEmail({
+      senderEmail,
+      to: receiverEmail,
+      subject,
+      text: message
+    });
+
     res.status(200).json({
       success: true,
-      message: "Message scheduled successfully",
+      message: "Message scheduled & email sent",
       data: newMessage
     });
 
   } catch (error) {
+    console.error("Error:", error);
     res.status(500).json({
       success: false,
       error: error.message
